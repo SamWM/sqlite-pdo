@@ -1,3 +1,4 @@
 All code licensed under a BSD style license, unless noted otherwise.
 
 WMFile is a simple PHP class which can be used to manage and upload files and store them in a SQLite database
+hitcounter is a sample hit counter, that logs every hit to a page
