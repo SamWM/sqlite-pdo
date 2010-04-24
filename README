@@ -1,4 +1,8 @@
-All code licensed under a BSD style license, unless noted otherwise.
+All code is licensed under a BSD style license and requires PHP 5.1 or later, unless noted otherwise.
 
 WMFile is a simple PHP class which can be used to manage and upload files and store them in a SQLite database
+  Write access is required on the 'files' directory and the 'wmfile.sqlite' database file
+
 hitcounter is a sample hit counter, that logs every hit to a page
+  The database is saved in the 'data' directory under the document root, e.g. /home/username/htdocs/data/
+  Write access to directory required. Modify path if needed
