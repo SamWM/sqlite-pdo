@@ -2,7 +2,7 @@
 /**
  * Simple file manager class
  *
- * @version    1.0
+ * @version    1.1
  * @author     Sam Collett
  * @license    http://github.com/SamWM/sqlite-pdo/blob/master/LICENSE
  */
@@ -38,9 +38,13 @@ class WMFile {
 			}
 		}
 	}
-	
-	
-	public function showFiles() {
+	/**
+	 * Shows a table listing the files
+	 *
+	 * @param boolean $admin Show admin options (delete button)
+	 * @return string A table of files
+	 */
+	public function showFiles($admin = true) {
 		$html = "No files found";
 		
 		// PDO http://uk.php.net/manual/en/class.pdo.php
@@ -48,15 +52,15 @@ class WMFile {
 		$wmfiledb = new PDO('sqlite:'.$this->pathtowmfile);
 		
 		$starttable = "<table>
-	<tr>
-		<th>id</th>
-		<th>name</th>
+	<tr>"
+		.(($admin == true) ? "<th>id</th>" : "").
+		"<th>name</th>
 		<th>size</th>
 		<th>type</th>
 		<th>title</th>
-		<th>updated</th>
-		<th>delete</th>
-	</tr>";
+		<th>updated</th>"
+		.(($admin == true) ? "<th>delete</th>" : "").
+	"</tr>";
 		$endtable = "</table>";
 		$tablecontents = "";
 		$statement = $wmfiledb->query("SELECT * FROM downloads");
@@ -68,19 +72,20 @@ class WMFile {
 			if(sizeof($record) != 0) {
 				foreach ($record as $row) {
 					$tablecontents .= "
-				<tr>
-					<td>{$row['id']}</td>
-					<td><a href=\"$this->virtualpath{$row['name']}\">{$row['name']}</a></td>
+				<tr>"
+					.(($admin == true) ? "<td>{$row['id']}</td>" : "").
+					"<td><a href=\"$this->virtualpath{$row['name']}\">{$row['name']}</a></td>
 					<td>{$row['size']}</td>
 					<td>{$row['type']}</td>
 					<td>{$row['title']}</td>
-					<td>{$row['updated']}</td>
+					<td>{$row['updated']}</td>"
+					.(($admin == true) ? "
 					<td><form method='post' action='{$_SERVER["REQUEST_URI"]}'>
 					<input type='hidden' name='document_id' value='{$row['id']}' />
 					<input type='hidden' name='action' value='delete_document' />
 					<input type='submit' value='Delete' />
-					</form></td>
-				</tr>";
+					</form></td>" : "").
+				"</tr>";
 				}
 				$html = $starttable.$tablecontents.$endtable;
 			}
